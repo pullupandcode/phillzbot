@@ -1,0 +1,3 @@
+package twitch
+
+func InitEventSub() {}
