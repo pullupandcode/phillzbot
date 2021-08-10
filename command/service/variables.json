@@ -1,0 +1,66 @@
+[
+    {
+      "name":"$sender",
+      "description":"Username of user who triggered message"
+    },
+    {
+      "name":"$followage",
+      "description":"Followage of user"
+    },
+    {
+      "name":"$uptime",
+      "description":"Current stream uptime"
+    },
+    {
+      "name":"$viewers",
+      "description":"Current stream viewers"
+    },
+    {
+      "name":"$views",
+      "description":"Total channel views"
+    },
+    {
+      "name":"$topic",
+      "description":"Current game or category streaming"
+    },
+    {
+      "name":"$title",
+      "description":"Current title of the stream"
+    },
+    {
+      "name":"$followers",
+      "description":"Number of channel followers"
+    },
+    {
+      "name":"$subscribers",
+      "description":"Total number of channel subscribers"
+    },
+    {
+      "name":"$subscribers.newest",
+      "description":"The most recent subscriber's username"
+    },
+    {
+      "name":"$subscribers.newest.tier",
+      "description":"The most recent subscriber's tier"
+    },
+    {
+      "name":"$resubscribers.newest",
+      "description":"The most recent re-sub on the stream"
+    },
+    {
+      "name":"$resubscribers.newest.term",
+      "description":"The most recent re-subs's total months subscribed"
+    },
+    {
+      "name":"$followers.newest",
+      "description":"The most recent follower on stream"
+    },
+    {
+      "name":"$followers.newest.time.since",
+      "description":"Time since the last user followed the channel"
+    },
+    {
+      "name":"$commands",
+      "description":"Commands list"
+    }
+  ]

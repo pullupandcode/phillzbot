@@ -7,6 +7,7 @@ import (
 	"github.com/Adeithe/go-twitch/api/kraken"
 	"github.com/Adeithe/go-twitch/irc"
 	"github.com/Adeithe/go-twitch/pubsub"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type TwitchCommandRole int
@@ -25,12 +26,12 @@ func (role TwitchCommandRole) String() string {
 }
 
 type TwitchCommand struct {
-	Id          string            `json:"id" bson:"id"`
-	Name        string            `json:"name" bson:"name"`
-	Description string            `json:"description" bson:"description"`
-	Role        TwitchCommandRole `json:"role" bson:"role"`
-	Value       string            `json:"value" bson:"value"`
-	Cooldown    int               `json:"cooldown" bson:"cooldown"`
+	ID          primitive.ObjectID `bson:"_id" json:"id,omitempty"`
+	Name        string             `json:"name" bson:"name"`
+	Description string             `json:"description" bson:"description"`
+	Role        TwitchCommandRole  `json:"role" bson:"role"`
+	Value       string             `json:"value" bson:"value"`
+	Cooldown    int                `json:"cooldown" bson:"cooldown"`
 }
 
 type TwitchCommandService interface {
@@ -40,6 +41,8 @@ type TwitchCommandService interface {
 	Update(ctx context.Context, tc *TwitchCommand) error
 	Create(ctx context.Context, tc *TwitchCommand) error
 	Delete(ctx context.Context, id string) error
+	FormatCommandMessage(msg irc.ChatMessage) (string, error)
+	GetCommandVariables() map[string]string
 }
 
 type TwitchCommandRepo interface {
@@ -63,3 +66,27 @@ type TwitchAPI struct {
 }
 
 type TwitchHandleCallback func(shardID int, msg irc.ChatMessage)
+
+type TwitchCommandVariable struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
+
+type TwitchCommandVariableList struct {
+	Variables []TwitchCommandVariable `json:"variables"`
+}
+
+type HelixChannelDataResponseItem struct {
+	ID           string `json:"broadcaster_id"`
+	Login        string `json:"broadcaster_login"`
+	Name         string `json:"broadcaster_name"`
+	Lang         string `json:"broadcaster_language"`
+	GameID       string `json:"game_id"`
+	GameTopic    string `json:"game_name"`
+	Title        string `json:"title"`
+	ChannelDelay string `json:"delay"`
+}
+
+type HelixChannelResponse struct {
+	Data []HelixChannelDataResponseItem `json:"data"`
+}

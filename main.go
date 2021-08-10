@@ -42,24 +42,6 @@ func main() {
 	var err error
 	_ = godotenv.Load()
 
-	twitchChat, err := twitch.NewIRC()
-	if err != nil {
-		log.Fatal(err)
-	}
-	go (func() {
-		twitchChat.InitChat(func(shardID int, msg irc.ChatMessage) {
-			if strings.HasPrefix(msg.Text, "!") {
-				fmt.Printf("%s has a command!", msg.Text)
-				if msg.Sender.Username != twitchChat.Say.Username {
-					commandIrc.HandleTwitchCommand(msg, twitchChat.Say)
-				}
-
-			} else {
-				fmt.Printf("#%s %s: %s\n\n", msg.Channel, msg.Sender.DisplayName, msg.Text)
-			}
-		})
-	})()
-
 	r := mux.NewRouter().PathPrefix("/api/v1").Subrouter()
 
 	dbConn := &repository.MongoDB{}
@@ -72,6 +54,23 @@ func main() {
 	twitchRepo := commandRepo.NewMongoCommandRepo(dbConn.Database)
 	twitchCommandService := commandService.NewTwitchCommandService(twitchRepo)
 	commandHandler.AddTwitchHandler(r, twitchCommandService)
+
+	twitchChat, err := twitch.NewIRC()
+	if err != nil {
+		log.Fatal(err)
+	}
+	go (func() {
+		twitchChat.InitChat(func(shardID int, msg irc.ChatMessage) {
+			if strings.HasPrefix(msg.Text, "!") {
+				if msg.Sender.Username != twitchChat.Say.Username {
+					commandIrc.HandleTwitchCommand(msg, twitchCommandService, twitchChat.Say)
+				}
+
+			} else {
+				fmt.Printf("#%s %s: %s\n\n", msg.Channel, msg.Sender.DisplayName, msg.Text)
+			}
+		})
+	})()
 
 	// discord
 	// commandRepo := mongo.NewMongoCommandRepo(dbConn.Database)
