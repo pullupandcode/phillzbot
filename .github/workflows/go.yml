@@ -31,9 +31,9 @@ jobs:
     - name: Test
       run: go test -v .
 
-    deploy:
-      runs-on: ubuntu-latest
-      steps:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy to Heroku
         if: github.event.pull_request.merged == true
         uses: akhileshns/heroku-deploy@v3.7.8 # This is the action
