@@ -88,6 +88,6 @@ func main() {
 		return nil
 	})
 
-	log.Fatal(http.ListenAndServe(fmt.Sprintf("localhost:%s", os.Getenv("PORT")), handlers.CORS()(loggedRouter)))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", os.Getenv("PORT")), handlers.CORS()(loggedRouter)))
 
 }
