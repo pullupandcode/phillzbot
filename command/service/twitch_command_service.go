@@ -151,5 +151,14 @@ func (s *twitchCommandService) FormatCommandMessage(msg irc.ChatMessage) (string
 		cmdValue = strings.Replace(cmdResponse, "$sender", msg.Sender.Username, 1)
 	}
 
+	if strings.Contains(cmdResponse, "$commands") {
+		commands := s.GetTwitchCommandMap()
+		keys := ""
+		for k := range commands {
+			keys = keys + fmt.Sprintf("!%s ", k)
+		}
+		cmdValue = strings.Replace(cmdResponse, "$commands", keys, 1)
+	}
+
 	return cmdValue, nil
 }
