@@ -2,8 +2,8 @@ name: Go
 
 on:
   push:
-    branches: [main]
-  pull_request:
+    branches: 
+      - main
 
 jobs:
 
@@ -29,7 +29,6 @@ jobs:
       run: go test -v .
 
     - name: Deploy to Heroku
-      if: github.event.pull_request.merged == true
       uses: akhileshns/heroku-deploy@v3.7.8 # This is the action
       with:
         heroku_email: ${{secrets.HEROKU_EMAIL}}
