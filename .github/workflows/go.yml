@@ -21,16 +21,17 @@ jobs:
     - name: Build
       run: go build -v .
 
-    - name: Run vet & lint
-      run: |
-        go vet .
-        golint .
+    # - name: Run vet & lint
+    #   run: |
+    #     go vet .
+    #     golint .
 
     - name: Test
       run: go test -v .
 
     - name: Deploy to Heroku
-      uses: CDNievas/heroku-action@v1.0 # This is the action
+      if: github.event.pull_request.merged == true
+      uses: akhileshns/heroku-deploy@v3.7.8 # This is the action
       with:
         heroku_email: ${{secrets.HEROKU_EMAIL}}
         heroku_api_key: ${{secrets.HEROKU_API_KEY}}
