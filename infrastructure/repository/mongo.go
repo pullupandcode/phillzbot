@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"os"
 	"sync"
+	"time"
 
 	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
@@ -50,19 +51,17 @@ func connectToMongo(config *MongoConfig, logger *logrus.Logger) (a *mongo.Databa
 	var err error
 	var session *mongo.Client
 
-	if os.Getenv("GO_ENV") == "AWS" {
-		session, err = mongo.NewClient(options.Client().ApplyURI(config.MongoUri).SetTLSConfig(config.MongoTls))
-		if err != nil {
-			logger.Fatal(err)
-		}
-	} else {
-		session, err = mongo.NewClient(options.Client().ApplyURI(config.MongoUri))
-		if err != nil {
-			logger.Fatal(err)
-		}
-	}
+	// if os.Getenv("GO_ENV") == "AWS" {
+	// 	session, err = mongo.NewClient(options.Client().ApplyURI(config.MongoUri).SetTLSConfig(config.MongoTls))
+	// 	if err != nil {
+	// 		logger.Fatal(err)
+	// 	}
+	// } else {
+	clientOptions := options.Client().ApplyURI(config.MongoUri)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 
-	session.Connect(context.TODO())
+	session, err = mongo.Connect(ctx, clientOptions)
 	if err != nil {
 		logger.Fatal(err)
 	}
