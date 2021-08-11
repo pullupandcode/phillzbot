@@ -15,7 +15,6 @@ import (
 	"phillzbot/twitch"
 
 	"github.com/Adeithe/go-twitch/irc"
-	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	log "github.com/sirupsen/logrus"
@@ -77,7 +76,7 @@ func main() {
 	// twitchCommandService := commandService.NewTwitchCommandService(commandRepo)
 	// commandHandler.AddTwitchHandler(r, twitchCommandService)
 
-	loggedRouter := handlers.LoggingHandler(log.Writer(), r)
+	// loggedRouter := handlers.LoggingHandler(log.Writer(), r)
 
 	r.Walk(func(route *mux.Route, router *mux.Router, ancestors []*mux.Route) error {
 		tmpl, _ := route.GetPathTemplate()
@@ -89,6 +88,6 @@ func main() {
 	})
 
 	fmt.Printf("PORT: %s \n\n", os.Getenv("PORT"))
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", os.Getenv("PORT")), loggedRouter))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", os.Getenv("PORT")), r))
 
 }
