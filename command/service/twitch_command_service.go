@@ -37,6 +37,8 @@ func NewTwitchCommandService(tcr domain.TwitchCommandRepo) domain.TwitchCommandS
 
 func (s *twitchCommandService) Fetch(ctx context.Context) (data []domain.TwitchCommand, err error) {
 	result, err := s.repo.Fetch(ctx)
+	fmt.Println(result)
+	fmt.Println(err)
 	if err != nil {
 		return nil, err
 	}

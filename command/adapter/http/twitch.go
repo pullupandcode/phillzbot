@@ -3,6 +3,7 @@ package http
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"phillzbot/domain"
 	"phillzbot/utils"
@@ -41,6 +42,8 @@ func (tch *TwitchCommandHandler) HandleCreate(w http.ResponseWriter, r *http.Req
 }
 func (tch *TwitchCommandHandler) HandleFetch(w http.ResponseWriter, r *http.Request) {
 	result, err := tch.TwitchCommandService.Fetch(context.Background())
+	fmt.Println(result)
+	fmt.Println(err)
 	if err != nil {
 		utils.RespondWithError(w, http.StatusInternalServerError, err.Error())
 	}
