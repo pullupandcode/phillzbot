@@ -79,7 +79,7 @@ func (i *TwitchIRC) InitChat(callback domain.TwitchHandleCallback) {
 	}
 
 	fmt.Printf("we can talk back as %s", i.Say.Username)
-	i.Say.Say("its_jay_phillz", fmt.Sprintf("%s is connected to chat", i.Say.Username))
+	i.Say.Say("its_jay_phillz", fmt.Sprintf("%s is connected to chat! \n", i.Say.Username))
 
 	i.See.OnShardMessage(callback)
 	i.See.OnShardLatencyUpdate(onShardLatencyUpdate)
@@ -89,7 +89,7 @@ func (i *TwitchIRC) InitChat(callback domain.TwitchHandleCallback) {
 		panic(err)
 	}
 
-	fmt.Println("Connected to domain.TwitchIRC!")
+	fmt.Println("Connected to domain.TwitchIRC! \n")
 	<-sc
 }
 
