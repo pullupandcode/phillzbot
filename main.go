@@ -88,6 +88,7 @@ func main() {
 		return nil
 	})
 
+	log.Debug(os.Getenv("PORT"))
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", os.Getenv("PORT")), handlers.CORS()(loggedRouter)))
 
 }
