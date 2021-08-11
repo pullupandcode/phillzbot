@@ -5,6 +5,8 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+    types: [ closed ]
+
 
 jobs:
 
@@ -29,10 +31,13 @@ jobs:
     - name: Test
       run: go test -v .
 
-    - name: Deploy to Heroku
-      if: github.event.pull_request.merged == true
-      uses: akhileshns/heroku-deploy@v3.7.8 # This is the action
-      with:
-        heroku_email: ${{secrets.HEROKU_EMAIL}}
-        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-        heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
+    deploy:
+      runs-on: ubuntu-latest
+      steps:
+      - name: Deploy to Heroku
+        if: github.event.pull_request.merged == true
+        uses: akhileshns/heroku-deploy@v3.7.8 # This is the action
+        with:
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
