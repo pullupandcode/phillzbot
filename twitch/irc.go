@@ -89,7 +89,7 @@ func (i *TwitchIRC) InitChat(callback domain.TwitchHandleCallback) {
 		panic(err)
 	}
 
-	fmt.Println("Connected to domain.TwitchIRC! \n")
+	fmt.Println("Connected to domain.TwitchIRC!")
 	<-sc
 }
 

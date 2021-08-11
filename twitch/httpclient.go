@@ -20,12 +20,12 @@ func NewAPIClient() (*domain.TwitchAPI, error) {
 
 	api_client_id := os.Getenv("API_CLIENT_ID")
 	if api_client_id == "" {
-		return nil, fmt.Errorf("Error: domain.TwitchAPI client id not found")
+		return nil, fmt.Errorf("error: domain.TwitchAPI client id not found")
 	}
 
 	api_token := os.Getenv("API_ACCESS_TOKEN")
 	if api_token == "" {
-		return nil, fmt.Errorf("Error: domain.TwitchAPI token not found")
+		return nil, fmt.Errorf("error: domain.TwitchAPI token not found")
 	}
 
 	krakenAPI := kraken.New(api_client_id, api_token)
