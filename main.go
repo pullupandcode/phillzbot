@@ -89,6 +89,6 @@ func main() {
 	})
 
 	fmt.Printf("PORT: %s \n\n", os.Getenv("PORT"))
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", os.Getenv("PORT")), handlers.CORS()(loggedRouter)))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", os.Getenv("PORT")), loggedRouter))
 
 }
