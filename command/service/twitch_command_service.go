@@ -134,9 +134,7 @@ func (s *twitchCommandService) FormatCommandMessage(msg irc.ChatMessage) (string
 
 		json.Unmarshal(resp.Body, &lastStreamed)
 
-		s.logger.Info(lastStreamed)
 		cmdValue = strings.Replace(cmdValue, "$viewer.last_streamed", lastStreamed.Data[0].GameTopic, 1)
-		s.logger.Debugf("$viewer: %s\n", cmdValue)
 	}
 
 	if strings.Contains(cmdResponse, "$shoutname") {
@@ -151,9 +149,22 @@ func (s *twitchCommandService) FormatCommandMessage(msg irc.ChatMessage) (string
 		cmdValue = strings.Replace(cmdResponse, "$sender", msg.Sender.Username, 1)
 	}
 
+	if strings.Contains(cmdResponse, "$followage") {
+		var followResponse domain.HelixChannelResponse
+
+		followageRequestParams := fmt.Sprintf("/users/follows?from_id=%s&to_id=%s", "113493450", "193648255")
+		resp, _ := s.api.Helix.Request("GET", followageRequestParams, nil)
+
+		json.Unmarshal(resp.Body, &followResponse)
+		log.Info(followResponse)
+
+		cmdValue = strings.Replace(cmdResponse, "$followage", msg.Sender.Username, 1)
+	}
+
 	if strings.Contains(cmdResponse, "$commands") {
 		commands := s.GetTwitchCommandMap()
 		keys := ""
+
 		for k := range commands {
 			keys = keys + fmt.Sprintf("!%s ", k)
 		}

@@ -78,8 +78,8 @@ func (i *TwitchIRC) InitChat(callback domain.TwitchHandleCallback) {
 		panic("failed to start writer")
 	}
 
-	fmt.Printf("we can talk back as %s", i.Say.Username)
-	i.Say.Say("its_jay_phillz", fmt.Sprintf("%s is connected to chat! \n", i.Say.Username))
+	fmt.Printf("we can talk back as %s \n", i.Say.Username)
+	i.Say.Say("its_jay_phillz", fmt.Sprintf("%s is reporting for duty \n", i.Say.Username))
 
 	i.See.OnShardMessage(callback)
 	i.See.OnShardLatencyUpdate(onShardLatencyUpdate)

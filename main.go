@@ -4,10 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"strings"
 
 	commandHandler "phillzbot/command/adapter/http"
-	commandIrc "phillzbot/command/adapter/irc"
 	commandRepo "phillzbot/command/repo/mongo"
 	commandService "phillzbot/command/service"
 	_ "phillzbot/config"
@@ -60,13 +58,9 @@ func main() {
 	}
 	go (func() {
 		twitchChat.InitChat(func(shardID int, msg irc.ChatMessage) {
-			if strings.HasPrefix(msg.Text, "!") {
-				if msg.Sender.Username != twitchChat.Say.Username {
-					commandIrc.HandleTwitchCommand(msg, twitchCommandService, twitchChat.Say)
-				}
-
-			} else {
-				fmt.Printf("#%s %s: %s\n\n", msg.Channel, msg.Sender.DisplayName, msg.Text)
+			err := twitchChat.Say.Say("BNiCe0rELsE", "jay phillz told me its a party in here LUL ")
+			if err != nil {
+				fmt.Println(err)
 			}
 		})
 	})()
