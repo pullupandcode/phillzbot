@@ -60,16 +60,14 @@ func main() {
 	}
 	go (func() {
 		twitchChat.InitChat(func(shardID int, msg irc.ChatMessage) {
-			twitchChat.InitChat(func(shardID int, msg irc.ChatMessage) {
-				if strings.HasPrefix(msg.Text, "!") {
-					if msg.Sender.Username != twitchChat.Say.Username {
-						commandIrc.HandleTwitchCommand(msg, twitchCommandService, twitchChat.Say)
-					}
-
-				} else {
-					fmt.Printf("#%s %s: %s\n\n", msg.Channel, msg.Sender.DisplayName, msg.Text)
+			if strings.HasPrefix(msg.Text, "!") {
+				if msg.Sender.Username != twitchChat.Say.Username {
+					commandIrc.HandleTwitchCommand(msg, twitchCommandService, twitchChat.Say)
 				}
-			})
+
+			} else {
+				fmt.Printf("#%s %s: %s\n\n", msg.Channel, msg.Sender.DisplayName, msg.Text)
+			}
 		})
 	})()
 
