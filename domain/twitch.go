@@ -90,3 +90,16 @@ type HelixChannelDataResponseItem struct {
 type HelixChannelResponse struct {
 	Data []HelixChannelDataResponseItem `json:"data"`
 }
+
+type HelixUserFollowsResponse struct {
+	Data []HelixUserFollowsResponseItem `json:"data"`
+}
+
+type HelixUserFollowsResponseItem struct {
+	FromID     string `json:"from_id"`
+	FromLogin  string `json:"from_login"`
+	FromName   string `json:"from_name"`
+	ToID       string `json:"to_id"`
+	ToName     string `json:"to_name"`
+	FollowedAt string `json:"followed_at"`
+}

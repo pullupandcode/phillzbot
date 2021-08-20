@@ -8,7 +8,10 @@ import (
 	"os"
 	"phillzbot/domain"
 	"phillzbot/twitch"
+	"phillzbot/utils"
+	"strconv"
 	"strings"
+	"time"
 
 	"github.com/Adeithe/go-twitch/api/helix"
 	"github.com/Adeithe/go-twitch/irc"
@@ -150,15 +153,33 @@ func (s *twitchCommandService) FormatCommandMessage(msg irc.ChatMessage) (string
 	}
 
 	if strings.Contains(cmdResponse, "$followage") {
-		var followResponse domain.HelixChannelResponse
+		layout := "2006-01-02T15:04:05Z"
 
-		followageRequestParams := fmt.Sprintf("/users/follows?from_id=%s&to_id=%s", "113493450", "193648255")
-		resp, _ := s.api.Helix.Request("GET", followageRequestParams, nil)
+		var followResponse domain.HelixUserFollowsResponse
+
+		followageRequestParams := fmt.Sprintf("/users/follows?from_id=%s&to_id=%s", strconv.FormatInt(msg.Sender.ID, 10), "193648255")
+		fmt.Println(followageRequestParams)
+		resp, err3 := s.api.Helix.Request("GET", followageRequestParams, nil)
+
+		fmt.Println(err3)
 
 		json.Unmarshal(resp.Body, &followResponse)
-		log.Info(followResponse)
+		// now := time.Now()
+		if len(followResponse.Data) != 0 {
+			t, err := time.Parse(layout, followResponse.Data[0].FollowedAt)
+			if err != nil {
+				fmt.Println(err)
+			}
 
-		cmdValue = strings.Replace(cmdResponse, "$followage", msg.Sender.Username, 1)
+			// duration := time.Since(t)
+			y, m, d, h, mi, s := utils.DateDiff(t, time.Now())
+			cmdString := fmt.Sprintf("%d years, %d months, %d days, %d hours, %d minutes and %d seconds... and counting", y, m, d, h, mi, s)
+
+			cmdValue = strings.Replace(cmdValue, "$followage", cmdString, 1)
+		} else {
+			cmdValue = strings.Replace(cmdValue, "$followage", "...oops, I couldn't tell. please try again later", 1)
+		}
+
 	}
 
 	if strings.Contains(cmdResponse, "$commands") {
@@ -168,7 +189,7 @@ func (s *twitchCommandService) FormatCommandMessage(msg irc.ChatMessage) (string
 		for k := range commands {
 			keys = keys + fmt.Sprintf("!%s ", k)
 		}
-		cmdValue = strings.Replace(cmdResponse, "$commands", keys, 1)
+		cmdValue = strings.Replace(cmdValue, "$commands", keys, 1)
 	}
 
 	return cmdValue, nil
