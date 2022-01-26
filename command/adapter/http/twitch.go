@@ -25,7 +25,7 @@ func AddTwitchHandler(r *mux.Router, tcs domain.TwitchCommandService) {
 	r.HandleFunc("/twitch/commands", handler.HandleFetch).Methods("GET").Name("FetchAllTwitchCommands")
 	r.HandleFunc("/twitch/commands/{id:[a-zA-Z0-9]+}", handler.HandleFetchById).Methods("GET").Name("FetchTwitchCommandById")
 	r.HandleFunc("/twitch/commands/:id", handler.HandleUpdate).Methods("POST").Name("UpdateTwitchCommand")
-	r.HandleFunc("/twitch/commands/:id", handler.HandleDelete).Methods("POST").Name("DeleteTwitchCommand")
+	r.HandleFunc("/twitch/commands/:id", handler.HandleDelete).Methods("DELETE").Name("DeleteTwitchCommand")
 }
 
 func (tch *TwitchCommandHandler) HandleCreate(w http.ResponseWriter, r *http.Request) {
