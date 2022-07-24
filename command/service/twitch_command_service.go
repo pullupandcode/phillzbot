@@ -106,7 +106,9 @@ func (s *twitchCommandService) GetTwitchCommandMap() map[string]string {
 	commandData, _ := s.Fetch(context.Background())
 
 	for _, cmd := range commandData {
-		commands[cmd.Name] = cmd.Value
+		if cmd.Name != "" {
+			commands[cmd.Name] = cmd.Value
+		}
 	}
 
 	return commands

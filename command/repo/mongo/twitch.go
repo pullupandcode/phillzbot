@@ -21,8 +21,6 @@ func NewMongoCommandRepo(db *mongo.Database) domain.TwitchCommandRepo {
 
 func (m *MongoCommandRepo) Fetch(ctx context.Context) (data []domain.TwitchCommand, err error) {
 	val, err := m.db.Collection(m.collection).Find(ctx, bson.D{{}})
-	fmt.Println(val)
-	fmt.Println(err)
 	var results = []domain.TwitchCommand{}
 
 	if err != nil {
