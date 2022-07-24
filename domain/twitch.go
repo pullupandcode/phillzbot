@@ -38,7 +38,7 @@ type TwitchCommandService interface {
 	Fetch(ctx context.Context) (data []TwitchCommand, err error)
 	FetchById(ctx context.Context, id string) (TwitchCommand, error)
 	FetchByName(ctx context.Context, name string) (TwitchCommand, error)
-	Update(ctx context.Context, tc *TwitchCommand) error
+	Update(ctx context.Context, tc *TwitchCommand, cmdId primitive.ObjectID) error
 	Create(ctx context.Context, tc *TwitchCommand) error
 	Delete(ctx context.Context, id string) error
 	FormatCommandMessage(msg irc.ChatMessage) (string, error)
@@ -49,7 +49,7 @@ type TwitchCommandRepo interface {
 	Fetch(ctx context.Context) (data []TwitchCommand, err error)
 	FetchById(ctx context.Context, id string) (TwitchCommand, error)
 	FetchByName(ctx context.Context, name string) (TwitchCommand, error)
-	Update(ctx context.Context, tc *TwitchCommand) error
+	Update(ctx context.Context, tc *TwitchCommand, cmdId primitive.ObjectID) error
 	Create(ctx context.Context, tc *TwitchCommand) error
 	Delete(ctx context.Context, id string) error
 }
