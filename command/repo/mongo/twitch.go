@@ -61,7 +61,15 @@ func (m *MongoCommandRepo) FetchByName(ctx context.Context, name string) (data d
 	return data, nil
 
 }
-func (m *MongoCommandRepo) Update(ctx context.Context, tc *domain.TwitchCommand) error {
+func (m *MongoCommandRepo) Update(ctx context.Context, tc *domain.TwitchCommand, cmdId primitive.ObjectID) error {
+
+	filter := bson.M{"_id": cmdId}
+	_, err := m.db.Collection(m.collection).UpdateOne(context.Background(), filter, bson.M{"$set": tc})
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 func (m *MongoCommandRepo) Create(ctx context.Context, tc *domain.TwitchCommand) error {
@@ -74,5 +82,4 @@ func (m *MongoCommandRepo) Create(ctx context.Context, tc *domain.TwitchCommand)
 }
 func (m *MongoCommandRepo) Delete(ctx context.Context, id string) error {
 	return nil
-
 }

@@ -16,6 +16,7 @@ import (
 	"github.com/Adeithe/go-twitch/api/helix"
 	"github.com/Adeithe/go-twitch/irc"
 	log "github.com/sirupsen/logrus"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type twitchCommandService struct {
@@ -57,7 +58,12 @@ func (s *twitchCommandService) FetchById(ctx context.Context, id string) (data d
 func (s *twitchCommandService) FetchByName(ctx context.Context, name string) (data domain.TwitchCommand, err error) {
 	return data, nil
 }
-func (s *twitchCommandService) Update(ctx context.Context, tc *domain.TwitchCommand) error {
+func (s *twitchCommandService) Update(ctx context.Context, tc *domain.TwitchCommand, cmdId primitive.ObjectID) error {
+	err := s.repo.Update(context.Background(), tc, cmdId)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 func (s *twitchCommandService) Create(ctx context.Context, tc *domain.TwitchCommand) error {
@@ -116,8 +122,6 @@ func (s *twitchCommandService) FormatCommandMessage(msg irc.ChatMessage) (string
 
 	cmdResponse := cmdMap[cmdName]
 	cmdValue = cmdResponse
-
-	s.logger.Infof("before: %s\n", cmdValue)
 
 	if strings.Contains(cmdResponse, "$viewer.last_streamed") {
 
